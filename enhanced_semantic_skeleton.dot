@@ -1,0 +1,41 @@
+// Hierarchical Semantic Skeleton
+digraph {
+	subgraph cluster_foo {
+		node_1 [label=foo shape=box]
+		node_2 [label="Call to printf (line 4)" shape=oval]
+		node_1 -> node_2 [label=contains]
+		node_1 -> node_2 [label="flows to" style=dashed]
+		node_3 -> node_5 [label="flows to" style=dashed]
+		node_5 -> node_6 [label="flows to" style=dashed]
+		node_6 -> node_7 [label="flows to" style=dashed]
+		node_5 -> node_8 [label="flows to" style=dashed]
+		node_8 -> node_10 [label="flows to" style=dashed]
+	}
+	subgraph cluster_main {
+		node_3 [label=main shape=box]
+		node_4 [label=x shape=ellipse]
+		node_3 -> node_4 [label=contains]
+		node_5 [label="If (line 9)" shape=diamond]
+		node_3 -> node_5 [label=contains]
+		node_6 [label="Call to printf (line 10)" shape=oval]
+		node_3 -> node_6 [label=contains]
+		node_7 [label="Call to printf (line 12)" shape=oval]
+		node_3 -> node_7 [label=contains]
+		node_8 [label="For (line 14)" shape=hexagon]
+		node_3 -> node_8 [label=contains]
+		node_9 [label=i shape=ellipse]
+		node_3 -> node_9 [label=contains]
+		node_10 [label="Call to foo (line 15)" shape=oval]
+		node_3 -> node_10 [label=contains]
+		node_1 -> node_2 [label="flows to" style=dashed]
+		node_3 -> node_5 [label="flows to" style=dashed]
+		node_5 -> node_6 [label="flows to" style=dashed]
+		node_6 -> node_7 [label="flows to" style=dashed]
+		node_5 -> node_8 [label="flows to" style=dashed]
+		node_8 -> node_10 [label="flows to" style=dashed]
+	}
+	node_1 -> node_2 [label=calls color=red]
+	node_5 -> node_6 [label=calls color=red]
+	node_6 -> node_7 [label=calls color=red]
+	node_8 -> node_10 [label=calls color=red]
+}

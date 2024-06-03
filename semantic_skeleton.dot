@@ -1,0 +1,7 @@
+// Semantic Skeleton
+digraph {
+	main [label=main shape=box]
+	x [label=x shape=ellipse]
+	If [label=If shape=diamond]
+	main -> x [label=uses]
+}
