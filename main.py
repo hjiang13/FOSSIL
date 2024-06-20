@@ -4,7 +4,7 @@ from extractor.graph_visualizer import draw_tree
 import networkx as nx
 
 example_code = """
-#include <stdio.h>
+#
 
 void process_data(int data) {
     printf("Processing data: %d\\n", data);
