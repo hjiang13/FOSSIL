@@ -1,6 +1,7 @@
 from extractor.skeleton_extractor import extract_skeleton_and_snippets
 from extractor.summarizer import summarize_code_with_huggingface
 from extractor.graph_visualizer import draw_cfg
+import networkx as nx
 
 example_code = """
 void foo() {
@@ -38,3 +39,9 @@ for snippet in snippets:
 
 print("\nControl Flow Graph:")
 draw_cfg(cfg)
+
+# Save the CFG to a file
+cfg_filename = 'control_flow_graph.graphml'
+nx.write_graphml(cfg, cfg_filename)
+print(f"Control Flow Graph saved to {cfg_filename}")
+
