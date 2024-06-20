@@ -4,22 +4,33 @@ from extractor.graph_visualizer import draw_tree
 import networkx as nx
 
 example_code = """
-void foo() {
-    for (int i = 0; i < 10; i++) {
-        printf("%d\\n", i);
-    }
-    while (1) {
-        break;
+#include <stdio.h>
+
+void process_data(int data) {
+    printf("Processing data: %d\\n", data);
+}
+
+void handle_request(int request) {
+    for (int i = 0; i < request; i++) {
+        printf("Handling request %d\\n", i);
+        for (int j = 0; j < i; j++) {
+            process_data(j);
+        }
     }
 }
 
-void bar() {
-    printf("Hello, World!\\n");
+void server_loop() {
+    for (int k = 0; k < 5; k++) {
+        printf("Server loop iteration %d\\n", k);
+        handle_request(k);
+    }
 }
 
-void baz() {
-    foo();
-    bar();
+int main() {
+    printf("Starting server\\n");
+    server_loop();
+    printf("Server stopped\\n");
+    return 0;
 }
 """
 
