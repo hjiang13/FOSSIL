@@ -8,12 +8,18 @@ def draw_tree(tree, output_filename=None):
 
     for node in tree.nodes():
         x, y = pos[node]
-        # Draw the rectangle for each node
-        rect = Rectangle((x - 0.1, y - 0.05), 0.2, 0.1, fill=True, edgecolor='black', facecolor='lightblue')
-        ax.add_patch(rect)
-        # Add the label inside the rectangle
         label = tree.nodes[node].get('label', node)
-        plt.text(x, y, label, ha='center', va='center', fontsize=8, wrap=True)
+        
+        # Estimate the width and height of the rectangle based on text length
+        width = max(0.2, 0.01 * len(label.split()))
+        height = max(0.1, 0.01 * len(label.split()))
+        
+        # Draw the rectangle for each node
+        rect = Rectangle((x - width / 2, y - height / 2), width, height, fill=True, edgecolor='black', facecolor='lightblue')
+        ax.add_patch(rect)
+        
+        # Add the label inside the rectangle
+        plt.text(x, y, label, ha='center', va='center', fontsize=8, wrap=True, bbox=dict(facecolor='white', alpha=0.5))
 
     edge_labels = nx.get_edge_attributes(tree, 'type')
     nx.draw_networkx_edges(tree, pos, ax=ax)
