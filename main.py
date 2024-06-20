@@ -1,4 +1,5 @@
 from extractor.skeleton_extractor import extract_skeleton_and_snippets
+from extractor.summarizer import summarize_code_with_huggingface
 from extractor.graph_visualizer import draw_cfg
 import networkx as nx
 
