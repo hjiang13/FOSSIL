@@ -12,7 +12,7 @@ def draw_tree(tree, output_filename=None):
         rect = Rectangle((x - 0.1, y - 0.05), 0.2, 0.1, fill=True, edgecolor='black', facecolor='lightblue')
         ax.add_patch(rect)
         # Add the label inside the rectangle
-        label = tree.nodes[node]['label']
+        label = tree.nodes[node].get('label', node)
         plt.text(x, y, label, ha='center', va='center', fontsize=8, wrap=True)
 
     edge_labels = nx.get_edge_attributes(tree, 'type')
