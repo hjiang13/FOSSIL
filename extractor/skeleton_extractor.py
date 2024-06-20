@@ -1,7 +1,7 @@
 import os
 from pycparser import c_parser, c_ast
 import networkx as nx
-from extractor.summarizer import summarize_code_with_huggingface
+from extractor.summarizer import summarize_code_with_codet5
 
 class CodeSkeletonExtractor(c_ast.NodeVisitor):
     def __init__(self):
@@ -15,7 +15,7 @@ class CodeSkeletonExtractor(c_ast.NodeVisitor):
         func_name = node.decl.name
         func_summary = f"Function: {func_name}"
         snippet = self.extract_code(node)
-        summary = summarize_code_with_huggingface(snippet)
+        summary = summarize_code_with_codet5(snippet)
         
         self.skeleton.append(func_summary)
         self.snippets.append(snippet)
@@ -27,7 +27,7 @@ class CodeSkeletonExtractor(c_ast.NodeVisitor):
     def visit_For(self, node):
         loop_name = f"for_loop_{len(self.snippets)}"
         snippet = self.extract_code(node)
-        summary = summarize_code_with_huggingface(snippet)
+        summary = summarize_code_with_codet5(snippet)
         
         self.skeleton.append("For Loop")
         self.snippets.append(snippet)
@@ -44,7 +44,7 @@ class CodeSkeletonExtractor(c_ast.NodeVisitor):
     def visit_While(self, node):
         loop_name = f"while_loop_{len(self.snippets)}"
         snippet = self.extract_code(node)
-        summary = summarize_code_with_huggingface(snippet)
+        summary = summarize_code_with_codet5(snippet)
         
         self.skeleton.append("While Loop")
         self.snippets.append(snippet)
