@@ -1,5 +1,5 @@
 from extractor.skeleton_extractor import extract_skeleton_and_snippets
-from extractor.summarizer import summarize_code_with_huggingface
+from extractor.summarizer import summarize_code_with_codebert
 from extractor.graph_visualizer import draw_cfg
 import networkx as nx
 
@@ -34,7 +34,7 @@ print(skeleton)
 
 print("\nSnippets and Summaries:")
 for snippet in snippets:
-    summary = summarize_code_with_huggingface(snippet)
+    summary = summarize_code_with_codebert(snippet)
     print(f"\nSnippet:\n{snippet}\nSummary: {summary}")
 
 # Save the CFG to a file
