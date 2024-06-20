@@ -1,6 +1,7 @@
 import os
 from pycparser import c_parser, c_ast
 import networkx as nx
+from extractor.summarizer import summarize_code_with_huggingface
 
 class CodeSkeletonExtractor(c_ast.NodeVisitor):
     def __init__(self):
@@ -8,43 +9,63 @@ class CodeSkeletonExtractor(c_ast.NodeVisitor):
         self.snippets = []
         self.cfg = nx.DiGraph()
         self.current_function = None
+        self.loop_stack = []
 
     def visit_FuncDef(self, node):
-        func_summary = f"Function: {node.decl.name}"
+        func_name = node.decl.name
+        func_summary = f"Function: {func_name}"
+        snippet = self.extract_code(node)
+        summary = summarize_code_with_huggingface(snippet)
+        
         self.skeleton.append(func_summary)
-        self.snippets.append(self.extract_code(node))
-        self.current_function = node.decl.name
-        self.cfg.add_node(self.current_function, type='function')
+        self.snippets.append(snippet)
+        self.cfg.add_node(func_name, type='function', label=summary)
+        self.current_function = func_name
         self.generic_visit(node)
         self.current_function = None
 
     def visit_For(self, node):
-        loop_summary = "For Loop"
-        self.skeleton.append(loop_summary)
-        snippet = self.extract_code(node)
-        self.snippets.append(snippet)
         loop_name = f"for_loop_{len(self.snippets)}"
-        self.cfg.add_node(loop_name, type='loop')
-        if self.current_function:
+        snippet = self.extract_code(node)
+        summary = summarize_code_with_huggingface(snippet)
+        
+        self.skeleton.append("For Loop")
+        self.snippets.append(snippet)
+        self.cfg.add_node(loop_name, type='loop', label=summary)
+        if self.loop_stack:
+            self.cfg.add_edge(self.loop_stack[-1], loop_name)
+        elif self.current_function:
             self.cfg.add_edge(self.current_function, loop_name)
+        
+        self.loop_stack.append(loop_name)
         self.generic_visit(node)
+        self.loop_stack.pop()
 
     def visit_While(self, node):
-        loop_summary = "While Loop"
-        self.skeleton.append(loop_summary)
-        snippet = self.extract_code(node)
-        self.snippets.append(snippet)
         loop_name = f"while_loop_{len(self.snippets)}"
-        self.cfg.add_node(loop_name, type='loop')
-        if self.current_function:
+        snippet = self.extract_code(node)
+        summary = summarize_code_with_huggingface(snippet)
+        
+        self.skeleton.append("While Loop")
+        self.snippets.append(snippet)
+        self.cfg.add_node(loop_name, type='loop', label=summary)
+        if self.loop_stack:
+            self.cfg.add_edge(self.loop_stack[-1], loop_name)
+        elif self.current_function:
             self.cfg.add_edge(self.current_function, loop_name)
+        
+        self.loop_stack.append(loop_name)
         self.generic_visit(node)
+        self.loop_stack.pop()
 
     def visit_FuncCall(self, node):
         if self.current_function:
             callee = node.name.name if isinstance(node.name, c_ast.ID) else None
             if callee:
-                self.cfg.add_edge(self.current_function, callee, type='call')
+                if self.loop_stack:
+                    self.cfg.add_edge(self.loop_stack[-1], callee, type='call')
+                else:
+                    self.cfg.add_edge(self.current_function, callee, type='call')
 
     def extract_code(self, node):
         start_line = node.coord.line
