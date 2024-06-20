@@ -1,6 +1,6 @@
 from extractor.skeleton_extractor import extract_skeleton_and_snippets
 from extractor.summarizer import summarize_code_with_codet5
-from extractor.graph_visualizer import draw_cfg
+from extractor.graph_visualizer import draw_tree
 import networkx as nx
 
 example_code = """
@@ -27,7 +27,7 @@ filename = 'example.c'
 with open(filename, 'w') as f:
     f.write(example_code)
 
-skeleton, snippets, cfg = extract_skeleton_and_snippets(example_code, filename)
+skeleton, snippets, tree = extract_skeleton_and_snippets(example_code, filename)
 
 print("Skeleton:")
 print(skeleton)
@@ -37,12 +37,12 @@ for snippet in snippets:
     summary = summarize_code_with_codet5(snippet)
     print(f"\nSnippet:\n{snippet}\nSummary: {summary}")
 
-# Save the CFG to a file
-cfg_filename = 'control_flow_graph.graphml'
-nx.write_graphml(cfg, cfg_filename)
-print(f"Control Flow Graph saved to {cfg_filename}")
+# Save the hierarchical tree to a file
+tree_filename = 'code_hierarchy.graphml'
+nx.write_graphml(tree, tree_filename)
+print(f"Code hierarchy saved to {tree_filename}")
 
-# Draw and save the CFG visualization as JPEG
-jpeg_filename = 'control_flow_graph.jpg'
-draw_cfg(cfg, output_filename=jpeg_filename)
-print(f"Control Flow Graph visualization saved to {jpeg_filename}")
+# Draw and save the hierarchical tree visualization as JPEG
+jpeg_filename = 'code_hierarchy.jpg'
+draw_tree(tree, output_filename=jpeg_filename)
+print(f"Code hierarchy visualization saved to {jpeg_filename}")
