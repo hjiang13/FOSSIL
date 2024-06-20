@@ -37,11 +37,12 @@ for snippet in snippets:
     summary = summarize_code_with_huggingface(snippet)
     print(f"\nSnippet:\n{snippet}\nSummary: {summary}")
 
-print("\nControl Flow Graph:")
-draw_cfg(cfg)
-
 # Save the CFG to a file
 cfg_filename = 'control_flow_graph.graphml'
 nx.write_graphml(cfg, cfg_filename)
 print(f"Control Flow Graph saved to {cfg_filename}")
 
+# Draw and save the CFG visualization as JPEG
+jpeg_filename = 'control_flow_graph.jpg'
+draw_cfg(cfg, output_filename=jpeg_filename)
+print(f"Control Flow Graph visualization saved to {jpeg_filename}")
