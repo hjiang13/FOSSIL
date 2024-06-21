@@ -38,6 +38,9 @@ filename = 'example.c'
 with open(filename, 'w') as f:
     f.write(example_code)
 
+from huggingface_hub import notebook_login
+notebook_login()
+
 skeleton, snippets, tree = extract_skeleton_and_snippets(example_code, filename)
 
 print("Skeleton:")
