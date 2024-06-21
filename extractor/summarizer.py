@@ -4,7 +4,8 @@ import torch
 from transformers import AutoTokenizer
 
 # Load the CodeLlama model and tokenizer
-
+from huggingface_hub import notebook_login
+notebook_login()
 
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/CodeLlama-7b-hf")
 model = "meta-llama/CodeLlama-7b-hf"
