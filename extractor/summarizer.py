@@ -1,8 +1,8 @@
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
 # Load the CodeLlama model and tokenizer
-tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3-8B")
-model = AutoModelForSeq2SeqLM.from_pretrained("meta-llama/Meta-Llama-3-8B")
+tokenizer = AutoTokenizer.from_pretrained("meta-llama/CodeLlama-7b-hf")
+model = AutoModelForSeq2SeqLM.from_pretrained("meta-llama/CodeLlama-7b-hf")
 
 def summarize_code_with_codellama(snippet):
     inputs = tokenizer.encode("summarize: " + snippet, return_tensors="pt", max_length=512, truncation=True)
