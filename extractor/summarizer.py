@@ -2,7 +2,7 @@ from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
 # Load the CodeLlama model and tokenizer
 
-token = "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"
+access_token = "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"
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/CodeLlama-7b-hf")
 model = AutoModelForSeq2SeqLM.from_pretrained("meta-llama/CodeLlama-7b-hf")
 
