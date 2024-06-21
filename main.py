@@ -1,9 +1,10 @@
 from extractor.skeleton_extractor import extract_skeleton_and_snippets
-from extractor.summarizer import summarize_code_with_codet5
+from extractor.summarizer import summarize_code_with_codellama
 from extractor.graph_visualizer import draw_tree
 import networkx as nx
 
 example_code = """
+#include <stdio.h>
 
 void process_data(int data) {
     printf("Processing data: %d\\n", data);
@@ -44,7 +45,7 @@ print(skeleton)
 
 print("\nSnippets and Summaries:")
 for snippet in snippets:
-    summary = summarize_code_with_codet5(snippet)
+    summary = summarize_code_with_codellama(snippet)
     print(f"\nSnippet:\n{snippet}\nSummary: {summary}")
 
 # Save the hierarchical tree to a file
